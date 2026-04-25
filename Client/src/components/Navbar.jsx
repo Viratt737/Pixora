@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <div className='flex items-center justify-between py-4'>
       <Link to='/'>
-        <img src={assets.logo} alt="" className='w-28 sm:w-32 lg:w-40' />
+        <img src={assets.logo} alt="" className='w-28 sm:w-32 lg:w-40 hover:scale-105' />
       </Link>
       <div>
         {user ? (
@@ -45,7 +45,7 @@ const Navbar = () => {
               className='cursor-pointer'>
               Pricing
             </p>
-            <button className='bg-zinc-800 text-white px-7 py-2 rounded-2xl'>
+            <button className='bg-zinc-800 text-white px-7 py-2 rounded-3xl hover:scale-105'>
               Login
             </button>
           </div>
