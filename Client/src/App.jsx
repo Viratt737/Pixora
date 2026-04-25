@@ -3,15 +3,16 @@ import {Routes, Route} from 'react-router-dom'
 import Home from './pages/Home'
 import BuyCreadit from './pages/BuyCreadit'
 import Result from './pages/Result'
+import Navbar from './components/Navbar'
 const App = () => {
   return (
     <div className='px-4 sm:px-10 md:px-14 lg:px-28
      min-h-screen from-teal-50 to-orange-50'>
-      <Routes>
+      <Navbar />
+        <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/result' element={<Result/>}/>
         <Route path='/buycreadits' element={<BuyCreadit/>}/>
-        
       </Routes>
       
     </div>
