@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import BuyCreadit from './pages/BuyCreadit'
 import Result from './pages/Result'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 const App = () => {
   return (
     <div className='px-4 sm:px-10 md:px-14 lg:px-28
@@ -14,7 +15,9 @@ const App = () => {
         <Route path='/result' element={<Result/>}/>
         <Route path='/buycreadits' element={<BuyCreadit/>}/>
       </Routes>
-      
+      <Footer />
+
+  
     </div>
   )
 }
