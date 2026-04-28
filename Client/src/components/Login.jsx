@@ -1,6 +1,18 @@
-import React from 'react'
+import React,{useState, useEffec, useContextt} from 'react'
 import {assets} from '../assets/assets'
+import {AppContext} from '../context/AppContext'
 const Login = () => {
+   const [state, setState] = useState('Login')
+   const {setShowLogin} = useContextt(AppContext);
+   useEffect(() =>{
+     document.body.style.overflow = 'hidden';
+     return ()=>{
+       document.body.style.overflow = 'unset';
+     }
+   }, [])
+
+
+
   return (
     <div className='absolute top-0 left-0 right-0
     bottom-0 backdrop-blur-sm bg-black/30 flex
@@ -8,14 +20,15 @@ const Login = () => {
       <form className='relative bg-black p-10 rounded-2xl
       text-slate-500'>
          <h1 className='text-center text-2xl text-white
-         font-medium mb-2'>Sign Up</h1>
+         font-medium mb-2'>{state}</h1>
           <p className='text-sm text-amber-100 mb-2'>Welcome back! Please sign in to continue</p>
-          <div className='border px-6 py-2 flex items-center
+
+       {state !== 'Login' && <div className='border px-6 py-2 flex items-center
           gap-2 rounded-full mt-4'>
             <img width={18}src={assets.profile_icon} alt="" />
             <input type="text" placeholder='Enter your name' required
             className='outline-none text-sm'/>
-          </div>
+          </div>}
 
           <div className='border px-6 py-2 flex items-center
           gap-2 rounded-full mt-4'>
@@ -35,18 +48,20 @@ const Login = () => {
           text-sm cursor-pointer'>Forgot Password?</p>
 
           <button className='bg-amber-200 mt-2 w-full text-shadow-indigo-100 py-2
-          rounded-full cursor-pointer'>create account</button>
+          rounded-full cursor-pointer'>{state === 'Login' ? 'Login' : 'create account'}</button>
 
-          <p className='mt-5 text-center'>Don't have an account? 
-          <span className='text-blue-600 cursor-pointer'>Sign Up</span>
+         {state === 'Login' ? <p className='mt-5 text-center'>Don't have an account? 
+          <span className='text-blue-600 cursor-pointer' onClick={() =>setState('Sign Up')}>Sign Up</span>
           </p>
-
+           :
           <p className='mt-5 text-center'>Already have an account? 
-          <span className='text-blue-600 cursor-pointer'>Login</span>
-          </p>
+          <span className='text-blue-600 cursor-pointer'
+          onClick={() => setState('Login')}>Login</span>
+          </p>}
 
           <img src={assets.cross_icon} alt="" 
-          className='absolute top-5 right-5 cursor-pointer'/>
+          className='absolute top-5 right-5 cursor-pointer'
+          onClick={() =>setShowLogin(false)}/>
       </form>
     </div>
   )
