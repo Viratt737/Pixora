@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import 'remixicon/fonts/remixicon.css'
 import {AppContext} from '../context/AppContext'
 const Navbar = () => {
-  const {user} = useContext(AppContext)
+  const {user, setShowLogin} = useContext(AppContext)
   const navigate = useNavigate();
 
   return (
@@ -45,7 +45,8 @@ const Navbar = () => {
               className='cursor-pointer'>
               Pricing
             </p>
-            <button className='bg-zinc-800 text-white px-7 py-2 rounded-3xl hover:scale-105'>
+            <button className='bg-zinc-800 text-white px-7 py-2 rounded-3xl hover:scale-105' 
+            onClick={() =>setShowLogin(true)}>
               Login
             </button>
           </div>
