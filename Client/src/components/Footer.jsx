@@ -1,8 +1,14 @@
 import React from 'react'
 import {assets} from '../assets/assets'
+import { motion } from "motion/react"
 const footer = () => {
   return (
-    <div className='flex items-center justify-between gap-4 py-3
+    <motion.div
+    initial={{opacity:0.2, y:100}}
+    transition={{duration:1}}
+    whileInView={{opacity:1, y:0}}
+    viewport={{once:true}}
+     className='flex items-center justify-between gap-4 py-3
     mt-1'>
        <img src={assets.logo} alt="" width={150}/>
        <p className='flex-1 border-l border-gray-400 pl-4
@@ -12,7 +18,7 @@ const footer = () => {
          <img src={assets.instagram_icon} alt="" width={35} />
          <img src={assets.twitter_icon} alt="" width={35} />
        </div>
-    </div>
+    </motion.div>
   )
 }
 
