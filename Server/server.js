@@ -1,13 +1,17 @@
-const express = require('express');
-const app = express();
+import express from 'express'
+import cors from 'cors'
+import 'dotenv/config'
 
-app.use('/', (res, req) =>{
-    return res.json({
-        msg : "server is start now"
+const PORT = process.env.PORT || 3000;
+const app = express();
+app.use(express.json())
+app.use(cors())
+app.get('/' ,(req, res) =>{
+    res.json({
+        "msg" : "API is Working"
     })
 })
 
-
-app.listen(3000, () => {
-    console.log(`Server is start at 3000`);
+app.listen(PORT, ()=>{
+    console.log(`server runnig on PORT ${PORT}`);
 })
