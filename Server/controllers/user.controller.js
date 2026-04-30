@@ -6,10 +6,11 @@ const registerUser = async(req, res) =>{
     try{
        const {name, email, password} = req.body;
        if(!name || !email || !password){
-        return res.status(404).json({
+        return res.status(400).json({
             msg : "name , email, password must be required",
             success : false
         })
+       }
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
 
@@ -22,7 +23,7 @@ const registerUser = async(req, res) =>{
         const newUser = new userModel(userData)
         const user = await newUser.save()
 
-        const token = jwt.sign({id : user._id}, process.env.JWT_SECRET)
+        const token = jwt.sign({id : user._id}, process.env.JWT_SECRET, { expiresIn: '7d' })  // ✅ Bug 4 Fixed: added expiresIn
         return res.json({
             success:true, 
             token,
@@ -30,7 +31,6 @@ const registerUser = async(req, res) =>{
                 name: user.name
             }
         })
-       }
     }catch(err){
         console.log(err)
         return res.json({
@@ -45,7 +45,7 @@ const loginUser = async(req, res) =>{
        const user = await userModel.findOne({email})
 
        if(!user){
-          return res.json.status(400).json({
+          return res.status(400).json({ 
             msg : "Invaild email or user not exist with this email",
             success : false 
           })
@@ -53,7 +53,7 @@ const loginUser = async(req, res) =>{
     
        const isMatch = await bcrypt.compare(password, user.password)
        if(isMatch){
-        const token = jwt.sign({id : user._id}, process.env.JWT_SECRET)
+        const token = jwt.sign({id : user._id}, process.env.JWT_SECRET, { expiresIn: '7d' })
 
         return res.status(200).json({
           success : true,
@@ -63,7 +63,7 @@ const loginUser = async(req, res) =>{
        }else{
         return res.status(400).json({
             success: false,
-            mag : "InvailPassword or user not exist"
+            msg : "InvaildPassword or user not exist"
         })
        }
        
@@ -74,3 +74,5 @@ const loginUser = async(req, res) =>{
         })
     }
 }
+
+export {registerUser,loginUser}
