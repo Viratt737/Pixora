@@ -10,41 +10,34 @@ const Login = () => {
    const [name, setName] = useState('');
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
-
-   const onSubmitHandler = async (e) =>{
+   const onSubmitHandler = async (e) => {
        e.preventDefault();
-       try{
-           if(state === 'Login'){
-           const {data} = await axios.post(backendurl + 'api/user/login', {email, password})
-             
-            if(data.success){
-              setToken(data.token)
-              setUser(data.user)
-              localStorage.getItem('token', data.token)
-              setShowLogin(false)
-            }else{
-              toast.error(data.message)
-            }
-           }else{
-              const {data} = await axios.post(backendurl + 'api/user/register', {name, email, password});
-              
-              if(data.success){
-              setToken(data.token)
-              setUser(data.user)
-              localStorage.getItem('token', data.token)
-              setShowLogin(false)
-            }else{
-              toast.error(data.message)
-            }
-           }
-       }catch{
-
-       }
-   }
-
-
-
-
+  try {
+    if (state === 'Login') {
+      const { data } = await axios.post(backendurl + '/api/user/login', { email, password })
+      if (data.success) {
+        setToken(data.token)
+        setUser(data.user)
+        localStorage.setItem('token', data.token)
+        setShowLogin(false)
+      } else {
+        toast.error(data.message)
+      }
+    } else {
+      const { data } = await axios.post(backendurl + '/api/user/register', { name, email, password })
+      if (data.success) {
+        setToken(data.token)
+        setUser(data.user)
+        localStorage.setItem('token', data.token)
+        setShowLogin(false)
+      } else {
+        toast.error(data.message)
+      }
+    }
+  } catch (error) {  
+    toast.error(error.message)
+  }
+}
    useEffect(() =>{
      document.body.style.overflow = 'hidden';
      return ()=>{
