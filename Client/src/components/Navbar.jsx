@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import 'remixicon/fonts/remixicon.css'
 import {AppContext} from '../context/AppContext'
 const Navbar = () => {
-  const {user, setShowLogin} = useContext(AppContext)
+  const {user, setShowLogin, logout, credit} = useContext(AppContext)
   const navigate = useNavigate();
 
   return (
@@ -18,9 +18,9 @@ const Navbar = () => {
             <button onClick={() => {navigate('/buycredits')}}
             className='flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full'>
               <img className='w-5' src={assets.credit_star} alt="" />
-              <p className='text-xs font-medium text-black-100'>Credits left : 50</p>
+              <p className='text-xs font-medium text-black-100 cursor-pointer'>Credits left : {credit}</p>
             </button>
-            <p className='text-black-100'>Hi, Virat Trivedi</p>
+            <p className='text-black-100'>{user.name}</p>
 
             {/* Profile icon with dropdown */}
             <div className='relative group'>
@@ -32,7 +32,8 @@ const Navbar = () => {
               <div className='absolute hidden group-hover:block
                 top-10 right-0 z-10 bg-white text-black rounded shadow-lg'>
                 <ul className='py-2 list-none m-0 p-2 bg-white rounded-md border text-sm'>
-                  <i className="ri-logout-box-r-line hover:bg-gray-100 cursor-pointer"></i>
+                  <i onClick={logout}
+                  className="ri-logout-box-r-line hover:bg-gray-100 cursor-pointer"></i>
                 </ul>
               </div>
             </div>
@@ -45,8 +46,8 @@ const Navbar = () => {
               className='cursor-pointer'>
               Pricing
             </p>
-            <button className='bg-zinc-800 text-white px-7 py-2 rounded-3xl hover:scale-105' 
-            onClick={() =>setShowLogin(true)}>
+            <button className='bg-zinc-800 text-white px-7 py-2 rounded-3xl hover:scale-105 cursor-pointer' 
+             onClick={() =>setShowLogin(true)}>
               Login
             </button>
           </div>
