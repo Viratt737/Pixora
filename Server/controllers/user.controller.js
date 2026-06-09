@@ -150,7 +150,17 @@ const paymentRazorpay = async (req, res) =>{
             receipt : newTransaction._id
         }
         await razorpayInstance.orders.create(Option, (error, order) =>{
-
+           if(error){
+            console.log(error);
+            return res.json({
+                success : false,
+                mesg : error
+            })
+           }
+           res.json({
+             success : true,
+             order
+           })
         })
     }catch(error){
         console.log(error)
@@ -161,4 +171,4 @@ const paymentRazorpay = async (req, res) =>{
     }
 }
 
-export {registerUser,loginUser, userCredits}
+export {registerUser,loginUser, userCredits, paymentRazorpay}
