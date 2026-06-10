@@ -151,7 +151,7 @@ const paymentRazorpay = async (req, res) =>{
             currency : process.env.CURRENCY,
             receipt : newTransaction._id
         }
-        await razorpayInstance.orders.create(option, (error, order) =>{
+await razorpayInstance.orders.create(option, (error, order) =>{
            if(error){
             console.log(error);
             return res.json({
@@ -171,7 +171,9 @@ const paymentRazorpay = async (req, res) =>{
             msg : error.message
         })
     }
+}                                     // ← ADD THIS CLOSING BRACE
 
+const verifyRazorpay = async(req, res) =>{
     const verifyRazorpay = async(req, res) =>{
         try{
            const {razorpay_order_id} = req.body;
@@ -209,4 +211,4 @@ const paymentRazorpay = async (req, res) =>{
     }
 }
 
-export {registerUser,loginUser, userCredits, paymentRazorpay}
+export {registerUser,loginUser, userCredits, paymentRazorpay, verifyRazorpay}
