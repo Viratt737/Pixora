@@ -18,7 +18,16 @@ const BuyCreadit = () => {
         order_id : order.id,
         receipt : order.receipt,
         handler : async (response) =>{
-            console.log(response);
+           try{
+              const {data} = await axios.post(backendurl + 'api/user/verify-razor'. response, {headers : {token}})
+               if(data.success){
+                loadCreditsData();
+                navigate('/')
+                toast.success('credit added')
+               }
+           }catch(err){
+            toast.error(err.message)
+           }
         }
       }
       const rzp = new window.Razorpay(options)
