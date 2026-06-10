@@ -185,10 +185,6 @@ The app will run at `http://localhost:5173`.
 
 ---
 
-##  Screenshots
-
-> *Add screenshots of the homepage, image generation page, and credit purchase flow here.*
-
 ---
 
 ##  Contributing
