@@ -10,7 +10,7 @@ COPY . .
 RUN npm run build
 
 # stage 2
-FROM nginx:1.29.8-alpine-slim
+FROM nginx:v1.29.8-alpine-slim
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf               

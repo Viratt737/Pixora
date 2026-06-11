@@ -185,8 +185,6 @@ The app will run at `http://localhost:5173`.
 
 ---
 
----
-
 ##  Contributing
 
 Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.

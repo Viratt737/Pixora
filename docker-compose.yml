@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  server:
+    build:
+      context: ./Server
+      dockerfile: Dockerfile
+    container_name: pixora-server
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./Server/.env
+    restart: unless-stopped
+    networks:
+      - pixora-network
+
+  client:
+    build:
+      context: ./Client
+      dockerfile: Dockerfile
+    container_name: pixora-client
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    restart: unless-stopped
+    networks:
+      - pixora-network
+
+networks:
+  pixora-network:
+    driver: bridge

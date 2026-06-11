@@ -1,6 +1,6 @@
 # stage 1
 
-FROM node:22-alpine AS builder
+FROM node:v22-alpine AS builder
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY . .
 # stage 2
 
 
-FROM node:22-alpine
+FROM node:v22-alpine
 
 WORKDIR /app
 
