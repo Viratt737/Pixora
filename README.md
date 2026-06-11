@@ -1,206 +1,291 @@
-#  Pixora
+# Pixora
 
-> **AI-powered SaaS platform that converts text prompts into high-quality images.**
+> AI-powered SaaS platform that converts text prompts into high-quality images.
 
-Pixora lets users generate stunning AI images simply by describing what they want in words. Built as a full-stack web application with a credit-based system and integrated payments, Pixora demonstrates a production-ready SaaS architecture.
+Pixora lets users generate stunning AI images simply by describing what they want in words. Built as a full-stack web application with a credit-based system, secure authentication, integrated payments, and containerized deployment using Docker.
 
 ---
 
 ## Features
 
-- **AI Image Generation** — Convert text prompts into high-quality images using generative AI models
-- **Credit System** — Users consume credits per image generation; purchase more credits as needed
-- **Razorpay Payment Integration** — Secure, seamless credit purchase flow with Razorpay (test & live mode)
-- **User Authentication** — Secure registration and login with JWT-based auth
-- **MongoDB Atlas** — Cloud-hosted database for users, credits, and transaction history
-- **Vite + React Frontend** — Lightning-fast development with React and Vite
-- **RESTful API** — Clean Node.js/Express backend serving the frontend
+* AI Image Generation — Convert text prompts into high-quality images using generative AI models
+* Credit System — Users consume credits per image generation and can purchase additional credits
+* Razorpay Payment Integration — Secure payment flow for credit purchases
+* JWT Authentication — Secure user registration and login
+* MongoDB Atlas Integration — Cloud-hosted database
+* React + Vite Frontend
+* Node.js + Express Backend
+* Dockerized Deployment
+* Docker Compose Support for full-stack deployment
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React (Vite), Axios, Context API |
-| Backend | Node.js, Express.js |
-| Database | MongoDB Atlas (Mongoose) |
-| Payments | Razorpay |
-| Auth | JWT (JSON Web Tokens) |
-| AI | Generative image model API |
+| Layer            | Technology                      |
+| ---------------- | ------------------------------- |
+| Frontend         | React, Vite, Axios, Context API |
+| Backend          | Node.js, Express.js             |
+| Database         | MongoDB Atlas, Mongoose         |
+| Authentication   | JWT                             |
+| Payments         | Razorpay                        |
+| AI Service       | ClipDrop API                    |
+| Containerization | Docker, Docker Compose          |
 
 ---
 
-##  Project Structure
+## Project Structure
 
-```
+```text
 Pixora/
-├── Client/                 # React frontend (Vite)
+│
+├── Client/
 │   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── context/        # AppContext — global state (user, token, credits)
-│   │   ├── pages/          # Page-level components
-│   │   └── assets/         # Static assets
-│   ├── .env                # Frontend environment variables
+│   ├── Dockerfile
+│   ├── .dockerignore
 │   └── package.json
 │
-└── Server/                 # Node.js backend
-    ├── controllers/        # Route handler logic
-    ├── models/             # Mongoose models (User, etc.)
-    ├── routes/             # Express route definitions
-    ├── middlewares/         # Auth & other middleware
-    ├── .env                # Backend environment variables
-    └── server.js           # Entry point
+├── Server/
+│   ├── controllers/
+│   ├── routes/
+│   ├── models/
+│   ├── middlewares/
+│   ├── Dockerfile
+│   ├── .dockerignore
+│   └── server.js
+│
+├── docker-compose.yml
+│
+└── README.md
 ```
 
 ---
 
-##  Getting Started
+## Environment Variables
 
-### Prerequisites
-
-- Node.js v18+
-- npm or yarn
-- MongoDB Atlas account
-- Razorpay account (for payments)
-- AI image generation API key
-
----
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/Viratt737/Pixora.git
-cd Pixora
-```
-
----
-
-### 2. Set up the Backend
-
-```bash
-cd Server
-npm install
-```
-
-Create a `.env` file inside `Server/`:
+### Server (.env)
 
 ```env
 PORT=4000
-MONGODB_URI=your_mongodb_atlas_connection_string
-JWT_SECRET=your_jwt_secret_key
 
-CLIPDROP_API=your_ai_image_api_key
+MONGODB_URI=your_mongodb_connection_string
 
-RAZORPAY_KEY_ID=your_razorpay_key_id
-RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+JWT_SECRET=your_jwt_secret
+
+CLIPDROP_API=your_clipdrop_api_key
+
+RAZORPAY_KEY_ID=your_razorpay_key
+
+RAZORPAY_KEY_SECRET=your_razorpay_secret
 ```
 
->  **Important:** Make sure `dotenv` is initialized at the very top of `server.js` — before any other imports that use environment variables (especially before the Razorpay instance is created).
-
-Start the backend server:
-
-```bash
-npm run server
-# or
-node server.js
-```
-
-The server will run at `http://localhost:4000`.
-
----
-
-### 3. Set up the Frontend
-
-```bash
-cd ../Client
-npm install
-```
-
-Create a `.env` file inside `Client/`:
+### Client (.env)
 
 ```env
 VITE_BACKEND_URL=http://localhost:4000
 ```
 
-Start the frontend:
+---
+
+# Running Locally (Without Docker)
+
+## Backend
 
 ```bash
+cd Server
+npm install
+npm run server
+```
+
+Backend runs on:
+
+```text
+http://localhost:4000
+```
+
+## Frontend
+
+```bash
+cd Client
+npm install
 npm run dev
 ```
 
-The app will run at `http://localhost:5173`.
+Frontend runs on:
+
+```text
+http://localhost:5173
+```
 
 ---
 
-## Payment Flow (Razorpay)
+# Docker Setup
 
-1. User selects a credit pack on the **Buy Credits** page
-2. Frontend calls the backend `/api/user/pay-razor` endpoint
-3. Backend creates a Razorpay order and returns the `order_id`
-4. Frontend opens the Razorpay checkout modal
-5. On success, backend verifies the payment signature and adds credits to the user's account
+## Build Backend Image
 
->  Use Razorpay **test keys** during development. Test card details are available in the [Razorpay test documentation](https://razorpay.com/docs/payments/payments/test-card-details/).
+```bash
+cd Server
 
----
+docker build -t pixora-backend .
+```
 
-##  Environment Variables Reference
+Run Backend Container:
 
-### Server (`Server/.env`)
-
-| Variable | Description |
-|----------|-------------|
-| `PORT` | Port for the Express server |
-| `MONGODB_URI` | MongoDB Atlas connection string |
-| `JWT_SECRET` | Secret key for signing JWTs |
-| `CLIPDROP_API` | API key for the AI image generation service |
-| `RAZORPAY_KEY_ID` | Razorpay public key |
-| `RAZORPAY_KEY_SECRET` | Razorpay secret key |
-
-### Client (`Client/.env`)
-
-| Variable | Description |
-|----------|-------------|
-| `VITE_BACKEND_URL` | Base URL of the backend API |
+```bash
+docker run -d \
+-p 4000:4000 \
+--env-file .env \
+--name pixora-backend \
+pixora-backend
+```
 
 ---
 
-##  Running in Test Mode
+## Build Frontend Image
 
-- Use Razorpay test API keys (prefix: `rzp_test_...`)
-- Test payments won't charge real money
-- MongoDB Atlas free tier works perfectly for local development
+```bash
+cd Client
 
----
+docker build -t pixora-frontend .
+```
 
-##  Common Issues & Fixes
+Run Frontend Container:
 
-| Issue | Fix |
-|-------|-----|
-| Razorpay 401 error | Ensure `dotenv.config()` is called before the Razorpay instance is initialized in `server.js` |
-| MongoDB connection fails | Check DNS settings — try switching to Google DNS (8.8.8.8) and flush DNS cache |
-| `.env` variables undefined | Confirm variable names match exactly (case-sensitive) |
-| Backend URL not found | Check `VITE_BACKEND_URL` in Client `.env` matches the running server port |
-
----
-
-##  Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+```bash
+docker run -d \
+-p 5173:5173 \
+--name pixora-frontend \
+pixora-frontend
+```
 
 ---
 
-##  License
+# Docker Compose Setup
 
-This project is open source and available under the [MIT License](LICENSE).
+Pixora includes a Docker Compose configuration for running the complete application stack.
+
+## Start Services
+
+```bash
+docker compose up --build
+```
+
+or
+
+```bash
+docker-compose up --build
+```
 
 ---
 
-##  Author
+## Run in Background
 
-**Viratt737** — [GitHub Profile](https://github.com/Viratt737)
+```bash
+docker compose up -d
+```
 
 ---
 
-*Built as a full-stack SaaS project.*
+## Stop Services
+
+```bash
+docker compose down
+```
+
+---
+
+## Rebuild Containers
+
+```bash
+docker compose up --build --force-recreate
+```
+
+---
+
+## View Logs
+
+```bash
+docker compose logs -f
+```
+
+---
+
+# Application URLs
+
+| Service     | URL                   |
+| ----------- | --------------------- |
+| Frontend    | http://localhost:5173 |
+| Backend API | http://localhost:4000 |
+
+---
+
+# Payment Flow
+
+1. User selects a credit package.
+2. Frontend sends request to backend.
+3. Backend creates Razorpay order.
+4. Razorpay Checkout opens.
+5. Payment verification is performed.
+6. Credits are added to the user's account.
+
+---
+
+# Common Issues
+
+### Docker Build Fails
+
+Make sure Docker Desktop is running:
+
+```bash
+docker version
+```
+
+---
+
+### Environment Variables Undefined
+
+Verify:
+
+```bash
+.env
+```
+
+exists and contains all required variables.
+
+---
+
+### MongoDB Connection Error
+
+* Check MongoDB Atlas whitelist settings
+* Verify connection string
+* Ensure internet connectivity
+
+---
+
+### Razorpay Authentication Error
+
+Ensure:
+
+```javascript
+dotenv.config();
+```
+
+is initialized before creating the Razorpay instance.
+
+---
+
+# Author
+
+Virat Trivedi
+
+GitHub:
+https://github.com/Viratt737
+
+Repository:
+https://github.com/Viratt737/Pixora
+
+---
+
+# License
+
+This project is licensed under the MIT License.
